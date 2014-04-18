@@ -1,4 +1,4 @@
-Dance weekend management app. In development. Getting a rename later.
+Form customizations shared by littleweaver projects.
 
 Development
 =============
