@@ -28,6 +28,6 @@ setup(
     platforms=['OS Independent'],
     install_requires=[
         'django>=1.7',
-        'Pillow>=2.3.0',
+        'django-floppyforms>=1.1.1',
     ]
 )

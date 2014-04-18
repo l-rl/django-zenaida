@@ -1,5 +1,3 @@
 # Latest Django 1.7 Stable, until 1.7 is released.
 https://github.com/django/django/tarball/stable/1.7.x
-# Not strictly required, but we will definitely be using it eventually.
-Pillow==2.3.1
 django-floppyforms==1.1.1
