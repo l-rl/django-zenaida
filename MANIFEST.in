@@ -1,0 +1,7 @@
+include README.rst
+include LICENSE
+include MANIFEST.in
+include zenaida/config.rb
+recursive-include zenaida/sass *
+recursive-include zenaida/static *
+recursive-include zenaida/templates *
