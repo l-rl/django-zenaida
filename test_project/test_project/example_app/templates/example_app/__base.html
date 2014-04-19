@@ -17,12 +17,12 @@
 		{% endblock %}
 		
 		{% block stylesheets %}
-			<link rel="stylesheet" type="text/css" href="{% static "littleweaver-forms/lib/chosen/chosen.min.css" %}" />
-			<link rel="stylesheet" type="text/css" href="{% static "littleweaver-forms/css/styles.css" %}" />
+			<link rel="stylesheet" type="text/css" href="{% static "zenaida/lib/chosen/chosen.min.css" %}" />
+			<link rel="stylesheet" type="text/css" href="{% static "zenaida/css/styles.css" %}" />
 		{% endblock %}
 
 	</head>
-	<body class="{% block body-classes %}littleweaver-forms{% endblock %}">
+	<body class="{% block body-classes %}zenaida{% endblock %}">
 		<nav class="navbar navbar-default" role="navigation">
 			<div class="container">
 				<div class="navbar-header">
@@ -66,10 +66,10 @@
 				ga('create','UA-XXXXX-X');ga('send','pageview');
 			</script>
 			-->
-			<script src="{% static "littleweaver-forms/js/jquery-1.11.0.min.js" %}"></script>
-			<script src="{% static "littleweaver-forms/js/bootstrap/transition.js" %}"></script>
-			<script src="{% static "littleweaver-forms/js/bootstrap/collapse.js" %}"></script>
-			<script type="text/javascript" src="{% static "littleweaver-forms/lib/chosen/chosen.jquery.min.js" %}"></script>
+			<script src="{% static "zenaida/js/jquery-1.11.0.min.js" %}"></script>
+			<script src="{% static "zenaida/js/bootstrap/transition.js" %}"></script>
+			<script src="{% static "zenaida/js/bootstrap/collapse.js" %}"></script>
+			<script type="text/javascript" src="{% static "zenaida/lib/chosen/chosen.jquery.min.js" %}"></script>
 			<script type="text/javascript">
 				$('.chosen-select').chosen({width: "100%"})
 			</script>

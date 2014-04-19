@@ -37,7 +37,7 @@ INSTALLED_APPS = (
     'django.contrib.messages',
     'django.contrib.staticfiles',
     'test_project.example_app',
-    'littleweaver_forms',
+    'zenaida',
     'floppyforms',
 )
 

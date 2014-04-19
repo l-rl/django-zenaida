@@ -1,15 +1,15 @@
 from setuptools import setup, find_packages
 
-__version__ = __import__('littleweaver_forms').__version__
+__version__ = __import__('zenaida').__version__
 
 
-description = "Form customizations shared by littleweaver projects."
+description = "Core functionality (forms, styles, etc) shared by littleweaver projects."
 
 
 setup(
-    name="littleweaver-forms",
+    name="django-zenaida",
     version='.'.join([str(v) for v in __version__]),
-    url="http://github.com/littleweaver/django-littleweaver-forms",
+    url="http://github.com/littleweaver/django-zenaida",
     description=description,
     long_description=description,
     maintainer='Little Weaver Web Collective, LLC',
