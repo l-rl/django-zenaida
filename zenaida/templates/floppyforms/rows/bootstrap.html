@@ -1,5 +1,5 @@
 {% load floppyforms zenaida %}{% block row %}{% for field in fields %}
-<div class="form-group{% if field.errors %} has-error{% endif %}">
+<div class="{% block field_classes %}form-group{% if field.errors %} has-error{% endif %}{% endblock %}">
 	{% with classes=field.css_classes label=label|default:field.label help_text=help_text|default:field.help_text is_checkbox=field|is_checkbox %}
 		{% block field %}
 			{% if is_checkbox %}

@@ -50,3 +50,14 @@ body
 .chosen-container-multi .chosen-choices li.search-choice
 	height: $input-height-base - 10px
 	margin: 5px 3px
+
+.input-group .chosen-choices
+	+border-radius(0)
+
+	&:first-child
+		+border-top-left-radius($border-radius-base)
+		+border-bottom-left-radius($border-radius-base)
+
+	&:last-child
+		+border-top-right-radius($border-radius-base)
+		+border-bottom-right-radius($border-radius-base)
