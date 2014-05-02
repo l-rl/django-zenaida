@@ -10,14 +10,14 @@ from floppyforms.fields import (CharField, IntegerField, DateField, TimeField,
 from floppyforms.forms import LayoutRenderer
 from floppyforms.models import ModelChoiceField, ModelMultipleChoiceField
 from floppyforms.widgets import *
-from zenaida.widgets import DateTimeLocalInput
+from zenaida.widgets import SplitDateTimeWidget
 
 FORMFIELD_OVERRIDES = {
     db_models.BooleanField: {'form_class': BooleanField},
     db_models.CharField: {'form_class': CharField},
     db_models.CommaSeparatedIntegerField: {'form_class': CharField},
     db_models.DateField: {'form_class': DateField},
-    db_models.DateTimeField: {'form_class': DateTimeField, 'widget': DateTimeLocalInput},
+    db_models.DateTimeField: {'form_class': DateTimeField, 'widget': SplitDateTimeWidget},
     db_models.DecimalField: {'form_class': DecimalField},
     db_models.EmailField: {'form_class': EmailField},
     db_models.FilePathField: {'form_class': FilePathField},
