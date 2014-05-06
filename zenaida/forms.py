@@ -94,8 +94,6 @@ class MemoModelForm(ModelForm):
     # complex formsets.
     def __init__(self, memo_dict, *args, **kwargs):
         self.memo_dict = memo_dict
-        if 'saved' not in memo_dict:
-            self.memo_dict['saved'] = 0
         super(MemoModelForm, self).__init__(*args, **kwargs)
 
     def _model_and_qs(self, model_or_qs):
@@ -116,12 +114,9 @@ class MemoModelForm(ModelForm):
                 self.memo_dict[key] = qs.get(**kwargs)
             except model.DoesNotExist:
                 self.memo_dict[key] = None
-        else:
-            self.memo_dict['saved'] += 1
 
         if self.memo_dict[key] is None:
             raise model.DoesNotExist
-        print "{}".format(self.memo_dict['saved'])
         return self.memo_dict[key]
 
     def filter(self, model_or_qs, **kwargs):
@@ -129,9 +124,6 @@ class MemoModelForm(ModelForm):
         key = frozenset(['filter', model] + [item for item in kwargs.items()])
         if key not in self.memo_dict:
             self.memo_dict[key] = list(qs.filter(**kwargs))
-        else:
-            self.memo_dict['saved'] += 1
-        print "{} - {}".format(self.memo_dict['saved'], key)
         return self.memo_dict[key]
 
     def set_choices(self, field_name, model_or_qs, **kwargs):
