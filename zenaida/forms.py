@@ -84,3 +84,62 @@ def inlineformset_factory(parent_model, model, form=ModelForm,
                           *args, **kwargs):
     return models.inlineformset_factory(parent_model, model, form,
                                         *args, **kwargs)
+
+
+### END FLOPPYFORMS PORT ###
+
+
+class MemoModelForm(ModelForm):
+    # Subclass of ModelForm that memoizes querysets. For use in
+    # complex formsets.
+    def __init__(self, memo_dict, *args, **kwargs):
+        self.memo_dict = memo_dict
+        if 'saved' not in memo_dict:
+            self.memo_dict['saved'] = 0
+        super(MemoModelForm, self).__init__(*args, **kwargs)
+
+    def _model_and_qs(self, model_or_qs):
+        if isinstance(model_or_qs, db_models.query.QuerySet):
+            qs = model_or_qs
+            model = qs.model
+        else:
+            model = model_or_qs
+            qs = model.objects.all()
+
+        return model, qs
+
+    def get(self, model_or_qs, **kwargs):
+        model, qs = self._model_and_qs(model_or_qs)
+        key = frozenset(['get', model] + [item for item in kwargs.items()])
+        if key not in self.memo_dict:
+            try:
+                self.memo_dict[key] = qs.get(**kwargs)
+            except model.DoesNotExist:
+                self.memo_dict[key] = None
+        else:
+            self.memo_dict['saved'] += 1
+
+        if self.memo_dict[key] is None:
+            raise model.DoesNotExist
+        print "{}".format(self.memo_dict['saved'])
+        return self.memo_dict[key]
+
+    def filter(self, model_or_qs, **kwargs):
+        model, qs = self._model_and_qs(model_or_qs)
+        key = frozenset(['filter', model] + [item for item in kwargs.items()])
+        if key not in self.memo_dict:
+            self.memo_dict[key] = list(qs.filter(**kwargs))
+        else:
+            self.memo_dict['saved'] += 1
+        print "{} - {}".format(self.memo_dict['saved'], key)
+        return self.memo_dict[key]
+
+    def set_choices(self, field_name, model_or_qs, **kwargs):
+        qs = self.filter(model_or_qs, **kwargs)
+        field = self.fields[field_name]
+        field.queryset = qs
+        field.cache_choices = True
+        field.choice_cache = [
+            (field.prepare_value(obj), field.label_from_instance(obj))
+            for obj in qs
+        ]
