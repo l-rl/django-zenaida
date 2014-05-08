@@ -59,6 +59,10 @@
         if (window.console && console.log)
             console.log('[formset] ' + Array.prototype.join.call(arguments, ' ') );
     };
+    Formset.warn = function () {
+        if (window.console && console.log)
+            console.warn('[formset] ' + Array.prototype.join.call(arguments, ' ') );
+    }
 
     Formset.prototype.init = function () {
         // Find all children of wrapper or all descendents matching options.rowSelector:
@@ -94,8 +98,8 @@
 
         this.insertAddLink();
 
-        // If sortableHandle and sortableField are set, initialize sortables
-        if (options.sortableHandle !== null && options.sortableField !== null) this.initSortable();
+        // If sortableField is set, initialize sortables
+        if (options.sortableField !== null) this.initSortable();
 
         // Trigger the initialized event:
         this.$el.trigger('initialized.formset');
@@ -103,8 +107,43 @@
     };
 
     Formset.prototype.initSortable = function () {
-        // TODO: implement
+        var formset = this, // useful for subscope below
+            options = this.options,
+            sortable_options = {opacity: .5, axis: "y"};
+
+        if (!("sortable" in $.fn)) {
+            // If jQuery UI sortable is not included, short-circuit:
+            Formset.warn("jQuery UI Sortable component required for sortable formsets. http://jqueryui.com/");
+            return;
+        }
+
+        // If a row selector is specified, limit sortables to that selector:
+        if (options.rowSelector !== null) sortable_options.items = options.rowSelector;
+        // If a handle is specified:
+        if (options.sortableHandle !== null) sortable_options.handle = options.sortableHandle;
+        // Add a callback for renumbering the fields:
+        sortable_options.update = function (e, data) {
+            formset.refreshRowOrder();
+        };
+
+        this.$el.sortable(sortable_options);
+
+        Formset.log("Initialized drag-and-drop sorting.")
     };
+
+    Formset.prototype.refreshRowOrder = function () {
+        var formset = this,
+            options = this.options,
+            rows = this.current_rows().filter(":visible"); // If a row is hidden, assume it's been deleted.
+        rows.each(function (i, v) {
+            var sortableFieldId;
+            formset.updateRowIndex($(this), i);
+            if (formset.options.sortableField) {
+                sortableFieldId = ["id_", options.prefix, "-", i, "-", options.sortableField].join("");
+                $("#" + sortableFieldId).val(i+1);
+            };
+        });
+    }
 
     Formset.prototype.current_rows = function () {
         var options = this.options;
@@ -122,9 +161,6 @@
             if (options.formTemplate) {
                 // If a form template was specified, we'll clone it to generate new form instances:
                 template = (options.formTemplate instanceof $) ? options.formTemplate : $(options.formTemplate);
-                template.find(Formset.childElementSelector).each(function() {
-                    formset.updateElementIndex($(this), options.prefix, '__prefix__');
-                });
             } else {
                 // Otherwise, use the last form in the formset; this works much better if you've got
                 // extra (>= 1) forms (thnaks to justhamade for pointing this out):
@@ -260,9 +296,7 @@
             this.current_rows().filter(':last').after(row)
         }
         this.insertDeleteLink(row);
-        row.find(Formset.childElementSelector).each(function() {
-            formset.updateElementIndex($(this), formCount);
-        });
+        this.updateRowIndex(row, formCount);
         this.totalForms.val(formCount + 1);
         // Check if we've exceeded the maximum allowed number of forms:
         if (buttonRow !== null) {
@@ -279,6 +313,13 @@
         Formset.log("Added a row. Current row count: " + this.totalForms.val() + ". Max row count: " + this.maxForms.val() + ".");
 
         return false;
+    };
+
+    Formset.prototype.updateRowIndex = function (row, ndx) {
+        var formset = this;
+        row.find(Formset.childElementSelector).each(function() {
+            formset.updateElementIndex($(this), ndx);
+        });
     };
 
     Formset.prototype.showAddButton = function () {
