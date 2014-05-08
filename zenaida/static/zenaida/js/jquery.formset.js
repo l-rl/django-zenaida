@@ -48,6 +48,8 @@
         deleteCssClass: 'delete-row',    // CSS class applied to the delete link
         formCssClass: 'dynamic-form',    // CSS class applied to each form in a formset
         keepFieldValues: '',             // jQuery selector for fields whose values should be kept when the form is cloned
+        sortableHandle: null,            // jQuery selector for what part of each form row is draggable
+        sortableField: null,             // Name of field which keeps track of order index
     };
 
     Formset.childElementSelector = 'input,select,textarea,label,div';
@@ -89,12 +91,19 @@
                 formset.insertDeleteLink(row);
             }
         });
-    
+
         this.insertAddLink();
+
+        // If sortableHandle and sortableField are set, initialize sortables
+        if (options.sortableHandle !== null && options.sortableField !== null) this.initSortable();
 
         // Trigger the initialized event:
         this.$el.trigger('initialized.formset');
         Formset.log("Initialized formset with " + initial_rows.length + " initial rows.");
+    };
+
+    Formset.prototype.initSortable = function () {
+        // TODO: implement
     };
 
     Formset.prototype.current_rows = function () {
