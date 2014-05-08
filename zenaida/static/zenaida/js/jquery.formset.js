@@ -54,7 +54,7 @@
         sortableField: null,             // Name of field which keeps track of order index
     };
 
-    Formset.childElementSelector = 'input,select,textarea,label,div';
+    Formset.childElementSelector = 'input,select,textarea,label,div,a';
 
     Formset.log = function () {
         /*global console:true */
@@ -339,6 +339,7 @@
         if (elem.attr("for")) elem.attr("for", elem.attr("for").replace(idRegex, replacement));
         if (elem.attr('id')) elem.attr('id', elem.attr('id').replace(idRegex, replacement));
         if (elem.attr('name')) elem.attr('name', elem.attr('name').replace(idRegex, replacement));
+        if (elem.attr('href')) elem.attr('href', elem.attr('href').replace(idRegex, replacement));
     },
 
     // Plugin Definition
