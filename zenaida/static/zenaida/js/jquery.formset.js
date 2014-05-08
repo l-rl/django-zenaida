@@ -19,6 +19,8 @@
  *                        hidden rather than destroyed.
  * row_added.formset   -- Triggered when a row is added. Receives the
  *                        new row as an extra parameter.
+ * reordered.formset   -- Triggered when the order of rows is changed by user
+ *                        drag and drop.
  */
 
 ;(function($) {
@@ -124,6 +126,9 @@
         // Add a callback for renumbering the fields:
         sortable_options.update = function (e, data) {
             formset.refreshRowOrder();
+            // Trigger a reorder event
+            formset.$el.trigger('reordered.formset');
+            Formset.log("Formset items reordered.");
         };
 
         this.$el.sortable(sortable_options);
