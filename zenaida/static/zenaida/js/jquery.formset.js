@@ -19,6 +19,8 @@
  *                        hidden rather than destroyed.
  * row_added.formset   -- Triggered when a row is added. Receives the
  *                        new row as an extra parameter.
+ * reordered.formset   -- Triggered when the order of rows is changed by user
+ *                        drag and drop.
  */
 
 ;(function($) {
@@ -48,6 +50,8 @@
         deleteCssClass: 'delete-row',    // CSS class applied to the delete link
         formCssClass: 'dynamic-form',    // CSS class applied to each form in a formset
         keepFieldValues: '',             // jQuery selector for fields whose values should be kept when the form is cloned
+        sortableHandle: null,            // jQuery selector for what part of each form row is draggable
+        sortableField: null,             // Name of field which keeps track of order index
     };
 
     Formset.childElementSelector = 'input,select,textarea,label,div';
@@ -57,6 +61,10 @@
         if (window.console && console.log)
             console.log('[formset] ' + Array.prototype.join.call(arguments, ' ') );
     };
+    Formset.warn = function () {
+        if (window.console && console.log)
+            console.warn('[formset] ' + Array.prototype.join.call(arguments, ' ') );
+    }
 
     Formset.prototype.init = function () {
         // Find all children of wrapper or all descendents matching options.rowSelector:
@@ -89,13 +97,58 @@
                 formset.insertDeleteLink(row);
             }
         });
-    
+
         this.insertAddLink();
+
+        // If sortableField is set, initialize sortables
+        if (options.sortableField !== null) this.initSortable();
 
         // Trigger the initialized event:
         this.$el.trigger('initialized.formset');
         Formset.log("Initialized formset with " + initial_rows.length + " initial rows.");
     };
+
+    Formset.prototype.initSortable = function () {
+        var formset = this, // useful for subscope below
+            options = this.options,
+            sortable_options = {opacity: .5, axis: "y"};
+
+        if (!("sortable" in $.fn)) {
+            // If jQuery UI sortable is not included, short-circuit:
+            Formset.warn("jQuery UI Sortable component required for sortable formsets. http://jqueryui.com/");
+            return;
+        }
+
+        // If a row selector is specified, limit sortables to that selector:
+        if (options.rowSelector !== null) sortable_options.items = options.rowSelector;
+        // If a handle is specified:
+        if (options.sortableHandle !== null) sortable_options.handle = options.sortableHandle;
+        // Add a callback for renumbering the fields:
+        sortable_options.update = function (e, data) {
+            formset.refreshRowOrder();
+            // Trigger a reorder event
+            formset.$el.trigger('reordered.formset');
+            Formset.log("Formset items reordered.");
+        };
+
+        this.$el.sortable(sortable_options);
+
+        Formset.log("Initialized drag-and-drop sorting.")
+    };
+
+    Formset.prototype.refreshRowOrder = function () {
+        var formset = this,
+            options = this.options,
+            rows = this.current_rows().filter(":visible"); // If a row is hidden, assume it's been deleted.
+        rows.each(function (i, v) {
+            var sortableFieldId;
+            formset.updateRowIndex($(this), i);
+            if (formset.options.sortableField) {
+                sortableFieldId = ["id_", options.prefix, "-", i, "-", options.sortableField].join("");
+                $("#" + sortableFieldId).val(i+1);
+            };
+        });
+    }
 
     Formset.prototype.current_rows = function () {
         var options = this.options;
@@ -113,9 +166,6 @@
             if (options.formTemplate) {
                 // If a form template was specified, we'll clone it to generate new form instances:
                 template = (options.formTemplate instanceof $) ? options.formTemplate : $(options.formTemplate);
-                template.find(Formset.childElementSelector).each(function() {
-                    formset.updateElementIndex($(this), options.prefix, '__prefix__');
-                });
             } else {
                 // Otherwise, use the last form in the formset; this works much better if you've got
                 // extra (>= 1) forms (thnaks to justhamade for pointing this out):
@@ -251,9 +301,7 @@
             this.current_rows().filter(':last').after(row)
         }
         this.insertDeleteLink(row);
-        row.find(Formset.childElementSelector).each(function() {
-            formset.updateElementIndex($(this), formCount);
-        });
+        this.updateRowIndex(row, formCount);
         this.totalForms.val(formCount + 1);
         // Check if we've exceeded the maximum allowed number of forms:
         if (buttonRow !== null) {
@@ -270,6 +318,13 @@
         Formset.log("Added a row. Current row count: " + this.totalForms.val() + ". Max row count: " + this.maxForms.val() + ".");
 
         return false;
+    };
+
+    Formset.prototype.updateRowIndex = function (row, ndx) {
+        var formset = this;
+        row.find(Formset.childElementSelector).each(function() {
+            formset.updateElementIndex($(this), ndx);
+        });
     };
 
     Formset.prototype.showAddButton = function () {

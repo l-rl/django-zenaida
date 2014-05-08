@@ -5,17 +5,17 @@
 <!--[if IE 8]>         <html class="no-js lt-ie9"> <![endif]-->
 <!--[if gt IE 8]><!--> <html class="no-js"> <!--<![endif]-->
     <head>
-        
+
         <meta charset="utf-8">
         <meta http-equiv="X-UA-Compatible" content="IE=edge">
-        
+
         <title>{% block title %}Zenaida{% endblock %}</title>
-        
+
         {% block meta %}
             <meta name="description" content="">
             <meta name="viewport" content="width=device-width, initial-scale=1">
         {% endblock %}
-        
+
         {% block stylesheets %}
             <link rel="stylesheet" type="text/css" href="{% static "zenaida/lib/chosen/chosen.min.css" %}" />
             <link rel="stylesheet" type="text/css" href="{% static "zenaida/css/styles.css" %}" />
@@ -67,6 +67,7 @@
             </script>
             -->
             <script src="{% static "zenaida/js/jquery-1.11.0.min.js" %}"></script>
+            <script src="{% static "zenaida/js/jquery-ui-1.10.4.custom.min.js" %}"></script>
             <script src="{% static "zenaida/js/jquery.formset.js" %}"></script>
             <script src="{% static "zenaida/js/bootstrap/transition.js" %}"></script>
             <script src="{% static "zenaida/js/bootstrap/collapse.js" %}"></script>
