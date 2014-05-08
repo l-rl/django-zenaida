@@ -139,7 +139,7 @@
     Formset.prototype.refreshRowOrder = function () {
         var formset = this,
             options = this.options,
-            rows = this.current_rows().filter(":visible"); // If a row is hidden, assume it's been deleted.
+            rows = this.current_rows();
         rows.each(function (i, v) {
             var sortableFieldId;
             formset.updateRowIndex($(this), i);
