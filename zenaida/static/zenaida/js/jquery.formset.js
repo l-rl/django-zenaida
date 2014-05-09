@@ -125,7 +125,7 @@
         if (options.sortableHandle !== null) sortable_options.handle = options.sortableHandle;
         // Add a callback for renumbering the fields:
         sortable_options.update = function (e, data) {
-            formset.refreshRowOrder();
+            formset.refreshRowOrderFields();
             // Trigger a reorder event
             formset.$el.trigger('reordered.formset');
             Formset.log("Formset items reordered.");
@@ -136,16 +136,16 @@
         Formset.log("Initialized drag-and-drop sorting.")
     };
 
-    Formset.prototype.refreshRowOrder = function () {
+    Formset.prototype.refreshRowOrderFields = function () {
         var formset = this,
             options = this.options,
             rows = this.current_rows();
         rows.each(function (i, v) {
-            var sortableFieldId;
-            formset.updateRowIndex($(this), i);
+            var sortableFieldSelector;
             if (formset.options.sortableField) {
-                sortableFieldId = ["id_", options.prefix, "-", i, "-", options.sortableField].join("");
-                $("#" + sortableFieldId).val(i+1);
+                // find a field that matches id=id_prefix-*-orderfield:
+                sortableFieldSelector = "[id^='id_"+options.prefix+"-'][id$='"+options.sortableField+"']"
+                $(sortableFieldSelector, this).val(i+1);
             };
         });
     }
