@@ -6319,6 +6319,10 @@ body {
   padding-bottom: 60px;
 }
 
+.js .js-hide {
+  display: none;
+}
+
 .glyphicon {
   font-size: 12px;
 }
