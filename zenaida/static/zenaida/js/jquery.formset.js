@@ -133,6 +133,9 @@
 
         this.$el.sortable(sortable_options);
 
+        // Ensure all rows have an order index:
+        if (options.sortableField !== null) this.refreshRowOrderFields();
+
         Formset.log("Initialized drag-and-drop sorting.")
     };
 
