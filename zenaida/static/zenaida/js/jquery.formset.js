@@ -310,8 +310,8 @@
         } else {
             if (!this.showAddButton()) this.add_link.hide();
         }
-        // If a post-add callback was supplied, call it with the added form:
-        if (options.added) options.added(row);
+        // If rows are orderable, ensure they all get an order index:
+        if (options.sortableField !== null) this.refreshRowOrderFields();
 
         // Trigger the row_added event:
         this.$el.trigger('row_added.formset', [row]);
