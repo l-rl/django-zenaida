@@ -350,18 +350,26 @@
     // Plugin Definition
     // =================
 
-    $.fn.formset = function (options) {
+    $.fn.formset = function (options, arg) {
         // Should be called on an element that is a parent or ancestor
         // of the formset rows.
         return this.each(function () {
             var $this = $(this),
                 data = $(this).data('formset'),
-                options_ = typeof options == 'object' && options;
+                options_ = typeof options == 'object' && options,
+                method;
             // Instatiate formset on element if it not already.
             if (!data) return $this.data('formset', new Formset(this, options_));
             // If a string was passed to the function, interpret as an API command.
-            if (typeof options_ == 'string') return data[option_]();
+            if (typeof options == 'string') {
+              method = $.fn.formset.API[options];
+              return data[method](arg);
+            }
         });
     };
+    // Map api commands to Formset methods.
+    $.fn.formset.API = {
+      'add': 'addRow'
+    }
 
 })(jQuery);
