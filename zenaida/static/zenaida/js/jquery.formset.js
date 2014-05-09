@@ -299,6 +299,7 @@
             formCount = parseInt(this.totalForms.val()),
             row = options.formTemplate.clone(true).removeClass('formset-custom-template'),
             buttonRow = $(this.add_link).parents('tr.' + options.formCssClass + '-add').get(0) ? $(this.add_link).parents('tr.' + options.formCssClass + '-add') : null;
+        row.removeAttr('id');
         if (buttonRow !== null) {
             // If this is a table, insert before the button row.
             row.insertBefore(buttonRow).show();
