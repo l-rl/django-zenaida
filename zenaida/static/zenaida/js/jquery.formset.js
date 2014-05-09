@@ -166,6 +166,8 @@
             current_rows = this.current_rows(),
             hideAddButton = !this.showAddButton(),
                 addButton, template;
+
+            // TODO: This template deducing code should be more robust and separate from the insertAddLink function
             if (options.formTemplate) {
                 // If a form template was specified, we'll clone it to generate new form instances:
                 template = (options.formTemplate instanceof $) ? options.formTemplate : $(options.formTemplate);
@@ -203,8 +205,8 @@
                 current_rows.parent().append(buttonRow);
                 if (hideAddButton) buttonRow.hide();
             } else {
-                // Otherwise, insert it immediately after the last form:
-                current_rows.filter(':last').after(add_link);
+                // Otherwise, insert it immediately after formset container:
+                this.$el.after(add_link);
                 if (hideAddButton) add_link.hide();
             }
             add_link.click(function (e) {
