@@ -123,7 +123,7 @@ class MemoModelForm(ModelForm):
         model, qs = self._model_and_qs(model_or_qs)
         key = frozenset(['filter', model] + [item for item in kwargs.items()])
         if key not in self.memo_dict:
-            self.memo_dict[key] = list(qs.filter(**kwargs))
+            self.memo_dict[key] = qs.filter(**kwargs)
         return self.memo_dict[key]
 
     def set_choices(self, field_name, model_or_qs, **kwargs):
