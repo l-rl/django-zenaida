@@ -1,5 +1,5 @@
 from django.db.models.query import QuerySet
-import floppyforms as forms
+import floppyforms.__future__ as forms
 
 
 class MemoModelForm(forms.ModelForm):
