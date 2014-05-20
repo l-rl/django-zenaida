@@ -22,7 +22,7 @@
 					{% formconfig row with hidden_fields=form.hidden_fields %}
 				{% endif %}
 				{% block row %}
-					{% formrow field %}
+					{% formrow field using "floppyforms/rows/bootstrap.html" %}
 				{% endblock %}
 			{% endfor %}
 			{% if not form.visible_fields %}
