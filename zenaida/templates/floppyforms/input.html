@@ -1,11 +1,12 @@
-{% load zenaida %}<input
+{% load zenaida cache %}<input
 	{% if not type == "checkbox" %}class="form-control"{% endif %}
 	type="{{ type }}"
 	name="{{ name }}"
+	{% if datalist %} list="{{ attrs.id }}_list"{% endif %}
+	id="{{ attrs|pop_id }}"
 	{% if value %} value="{{ value }}"{% endif %}
 	{% if required %} required{% endif %}
-	{% include "floppyforms/attrs.html" %}
-	{% if datalist %} list="{{ attrs.id }}_list"{% endif %}
+	{% if attrs %}{% cache 30 attrs attrs %}{% include "floppyforms/attrs.html" %}{% endcache %}{% endif %}
 	{% if placeholder %} placeholder="{{ placeholder }}"{% endif %}
 	{% if autocomplete %} autocomplete="{{ autocomplete }}"{% endif %}
 >

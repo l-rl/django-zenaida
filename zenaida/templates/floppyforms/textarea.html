@@ -1,7 +1,8 @@
-<textarea
+{% load zenaida cache %}<textarea
 	class="form-control"
 	rows="3"
 	name="{{ name }}"
+	id="{{ attrs|pop_id }}"
 	{% if required %} required{% endif %}
-	{% include "floppyforms/attrs.html" %}
+	{% if attrs %}{% cache 30 attrs attrs %}{% include "floppyforms/attrs.html" %}{% endcache %}{% endif %}
 >{% if value %}{{ value }}{% endif %}</textarea>

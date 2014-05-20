@@ -49,7 +49,7 @@ def td_timeuntil(value, now=None):
     """
 
     if not now:
-      now = datetime.datetime.now(pytz.utc)
+        now = datetime.datetime.now(pytz.utc)
 
     return value - now
 
@@ -67,8 +67,17 @@ def td_to_dict(td):
     """
 
     return {
-      'days': td.days,
-      'hours': td.seconds // 3600,
-      'minutes': td.seconds // 60,
-      'seconds': td.seconds % 60,
+        'days': td.days,
+        'hours': td.seconds // 3600,
+        'minutes': td.seconds // 60,
+        'seconds': td.seconds % 60,
     }
+
+
+@register.filter
+def pop_id(attrs):
+    """
+    Removes and returns 'id' from the passed-in dictionary, if present.
+    """
+    if 'id' in attrs:
+        return attrs.pop('id')

@@ -1,9 +1,10 @@
-<select
+{% load zenaida cache %}<select
 	class="chosen-select"
 	name="{{ name }}"
+	id="{{ attrs|pop_id }}"
 	{% if multiple %} multiple="multiple"{% endif %}
 	{% if required %} required{% endif %}
-	{% include "floppyforms/attrs.html" %}
+	{% if attrs %}{% cache 30 attrs attrs %}{% include "floppyforms/attrs.html" %}{% endcache %}{% endif %}
 >
 	{% for group_name, group_choices in optgroups %}
 		{% if group_name %}<optgroup label="{{ group_name }}">{% endif %}
