@@ -1,4 +1,4 @@
-{% load floppyforms zenaida %}{% block row %}{% for field in fields %}
+{% load floppyforms zenaida cache %}{% block row %}{% for field in fields %}
 <div class="{% block field_classes %}form-group{% if field.errors %} has-error{% endif %}{% endblock %}">
 	{% with classes=field.css_classes label=label|default:field.label help_text=help_text|default:field.help_text is_checkbox=field|is_checkbox %}
 		{% block field %}
@@ -22,7 +22,9 @@
 				{% endblock %}
 			{% endif %}
 			{% block errors %}
-				{% include "floppyforms/errors.html" with errors=field.errors %}
+				{% cache 30 field.errors %}
+					{% include "floppyforms/errors.html" with errors=field.errors %}
+				{% endcache %}
 			{% endblock %}
 			{% block help_text %}
 				{% if field.help_text %}
