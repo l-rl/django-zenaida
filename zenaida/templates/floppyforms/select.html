@@ -1,9 +1,9 @@
-{% load cache %}<select
+<select
 	class="chosen-select"
 	name="{{ name }}"
 	{% if multiple %} multiple="multiple"{% endif %}
 	{% if required %} required{% endif %}
-	{% cache 30 attrs %}{% include "floppyforms/attrs.html" %}{% endcache %}
+	{% include "floppyforms/attrs.html" %}
 >
 	{% for group_name, group_choices in optgroups %}
 		{% if group_name %}<optgroup label="{{ group_name }}">{% endif %}

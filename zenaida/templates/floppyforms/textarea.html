@@ -1,7 +1,7 @@
-{% load cache %}<textarea
+<textarea
 	class="form-control"
 	rows="3"
 	name="{{ name }}"
 	{% if required %} required{% endif %}
-	{% cache 30 attrs %}{% include "floppyforms/attrs.html" %}{% endcache %}
+	{% include "floppyforms/attrs.html" %}
 >{% if value %}{{ value }}{% endif %}</textarea>

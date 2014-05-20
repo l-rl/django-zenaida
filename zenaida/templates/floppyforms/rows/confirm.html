@@ -1,6 +1,6 @@
 {% extends 'floppyforms/rows/bootstrap.html' %}
 
-{% load floppyforms cache %}
+{% load floppyforms %}
 
 {% block field_classes %}form-group{% if field.errors or confirm.errors %} has-error{% endif %}{% endblock %}
 
@@ -15,7 +15,7 @@
 
 {% block errors %}
 	{{ block.super }}
-	{% cache 30 confirm.errors %}
+	{% if confirm.errors %}
 		{% include "floppyforms/errors.html" with errors=confirm.errors %}
-	{% endcache %}
+	{% endif %}
 {% endblock %}
