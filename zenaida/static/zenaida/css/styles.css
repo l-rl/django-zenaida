@@ -6330,6 +6330,10 @@ body {
   right: -12px;
 }
 
+.table-collapse-wrapper .table {
+  margin-bottom: 0;
+}
+
 .glyphicon {
   font-size: 12px;
 }
