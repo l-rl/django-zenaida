@@ -68,8 +68,8 @@ def td_to_dict(td):
 
     return {
         'days': td.days,
-        'hours': td.seconds // 3600,
-        'minutes': td.seconds // 60,
+        'hours': td.seconds // 3600 % 24,
+        'minutes': td.seconds // 60 % 60,
         'seconds': td.seconds % 60,
     }
 
