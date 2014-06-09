@@ -13,8 +13,11 @@ body
 // ----
 
 .panel-body:first-child
-	> h1:first-child
+	> h1:first-child, > h2:first-child, > h3:first-child, > h4:first-child, > h5:first-child, > h6:first-child
 		margin-top: 0
+
+.panel-title
+	font-size: ceil($font-size-base * 1.5)
 
 .form-control:focus
 	border-color: $brand-primary

@@ -2,8 +2,12 @@ body {
   padding-bottom: 60px;
 }
 
-.panel-body:first-child > h1:first-child {
+.panel-body:first-child > h1:first-child, .panel-body:first-child > h2:first-child, .panel-body:first-child > h3:first-child, .panel-body:first-child > h4:first-child, .panel-body:first-child > h5:first-child, .panel-body:first-child > h6:first-child {
   margin-top: 0;
+}
+
+.panel-title {
+  font-size: 24px;
 }
 
 .form-control:focus {
