@@ -65,3 +65,8 @@ Do not modify any of the files within ``django-zenaida/static/zenaida/css/``. Th
     compass watch         # Watch the sass directory for changes.
 
 Or use `Compass.app <http://compass.kkbox.com/>`_.
+
+Overriding styles when using Zenaida
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+If you are using Compass and Bootstrap SASS and you want to override any of Bootstrap's variables, then in your SASS directory, make copies of Zenaida's ``django-zenaida/sass/_variables.sass`` and ``django-zenaida/sass/chosen.sass``, and have your stylesheets include Bootstrap SASS dependent on your copied ``_variables.sass`` which is where you should modify Bootstrap variables. (The styles in ``chosen.sass`` make Chosen elements look bootstrappy, so it is unlikely you will want to modify that file, but it needs to be duplicated in order for it to use any variables you change in ``_variables.sass``.)
