@@ -16,7 +16,10 @@ class FeedbackMiddleware(object):
 
     def process_response(self, request, response):
         "Inject the feedback form into the response."
-
+        
+        if not request.resolver_match:
+            return response        
+            
         # If the view is in the ignored namespaces, short-circuit:
         if request.resolver_match.namespace in CONFIG['IGNORED_NAMESPACES']:
             return response
