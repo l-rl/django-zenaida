@@ -34,7 +34,7 @@
 			// Adjust the submit button:
 			$submitButton.attr("disabled", "disabled");
 			$submitButton.css({"opacity":.5});
-			$submitButton.text("Submitting...");
+			$submitButton.text("Envoi...");
 
 			// Clear the message container:
 			$messageContainer.html("");
@@ -60,7 +60,12 @@
 							// Add error to the message container:
 							var message;
 							if (v[0].code == "required") {
-								message = "Field <b>" + k + "</b> is required.";
+								if (k == "content") {
+									message = "Merci d'écrire un message.";
+								}
+								else {
+									message = "Le champ <b>" + k + "</b> est obligatoire.";
+								}
 							} else {
 								message = '<b>'+ k +':</b> ' + v[0].message
 							}
@@ -68,7 +73,7 @@
 						});
 					} else {
 						// If it's not a 400 error, I have no idea what's going on.
-						$messageContainer.append('<div class="zf-message-error">An unknown error occurred: ' + err + '. Please email a site administrator directly.</div>');
+						$messageContainer.append('<div class="zf-message-error">Une erreur inconnue est survenue: ' + err + '. Contactez-nous par mail.</div>');
 					}
 					// Readjust button for resubmission:
 					$submitButton.removeAttr("disabled");
