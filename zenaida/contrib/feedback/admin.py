@@ -1,6 +1,6 @@
 from django.contrib import admin
 
-from zenaida.contrib.feedback.models import FeedbackItem
+from feedback.models import FeedbackItem
 
 class FeedbackAdmin(admin.ModelAdmin):
     list_display = ("timestamp", "__unicode__", "content", "resolved",)
