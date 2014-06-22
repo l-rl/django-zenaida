@@ -9,7 +9,7 @@
 		<div class="zf-message-container">
 		</div>
 		{# http://stackoverflow.com/questions/5985839/bug-with-firefox-disabled-attribute-of-input-not-resetting-when-refreshing #}
-		<form action="{% url 'zenaida.contrib.feedback.views.feedback_ajax_submit' %}" enctype="multipart/form-data" method="post" autocomplete="off">
+		<form action="{% url 'feedback.views.feedback_ajax_submit' %}" enctype="multipart/form-data" method="post" autocomplete="off" class="form-horizontal">
 			{% for field in form.visible_fields %}
 				<div class="zf-control-group" id="zf-{{ field.name }}-group">
 					{{ field.label_tag }}
@@ -22,7 +22,7 @@
 			{% endfor %}
 			{% csrf_token %}
 			<div class="zf-body-footer">
-				<button>Submit Feedback</button>
+				<button class="btn btn-primary">{% trans "Submit Feedback" %}</button>
 			</div>
 		</form>
 	</div>

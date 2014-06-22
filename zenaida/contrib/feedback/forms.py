@@ -2,8 +2,9 @@ from django import forms
 from django.contrib.auth import get_user_model
 from django.core import serializers
 from django.utils.crypto import salted_hmac, constant_time_compare
+from django.utils.translation import ugettext as _
 
-from zenaida.contrib.feedback.models import FeedbackItem
+from feedback.models import FeedbackItem
 
 class FeedbackForm(forms.ModelForm):
     """
@@ -18,11 +19,11 @@ class FeedbackForm(forms.ModelForm):
     user = forms.ModelChoiceField(queryset=get_user_model().objects.all(),
                                   widget=forms.HiddenInput, required=True)
     view = forms.CharField(widget=forms.HiddenInput, required=True)
-    content = forms.CharField(label="Your Message", widget=forms.Textarea,
+    content = forms.CharField(label=_("Your Message"), widget=forms.Textarea,
                               required=True)
-    screenshot = forms.ImageField(label="Screenshot", widget=forms.FileInput,
+    screenshot = forms.ImageField(label=_("Screenshot"), widget=forms.FileInput,
                                   required=False,
-                                  help_text='Upload an optional screenshot, if applicable. <a href="http://www.take-a-screenshot.org/" target="_blank">How do I take a screenshot?</a>')
+                                  help_text=_('Upload an optional screenshot, if applicable. <a href="http://www.take-a-screenshot.org/" target="_blank">How do I take a screenshot?</a>'))
     request_path = forms.CharField(widget=forms.HiddenInput, required=True)
     request_method = forms.CharField(widget=forms.HiddenInput, required=True)
     request_encoding = forms.CharField(widget=forms.HiddenInput, required=False)
@@ -78,11 +79,11 @@ class FeedbackForm(forms.ModelForm):
         Generate a HMAC security hash from the provided info.
         """
         # Convert values to strings in order to hash them together:
-        info = [str(x) if x is not None else "" for x in user, view,
+        info = [str(x) if x is not None else "" for x in (user, view,
                 request_path, request_method,
                 request_encoding, request_meta, request_get,
-                request_post, request_files]
-        key_salt = "zenaida.contrib.feedback.FeedbackForm"
+                request_post, request_files)]
+        key_salt = "feedback.FeedbackForm"
         value = "-".join(info)
         return salted_hmac(key_salt, value).hexdigest()
 
