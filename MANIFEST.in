@@ -5,3 +5,5 @@ include zenaida/config.rb
 recursive-include zenaida/sass *
 recursive-include zenaida/static *
 recursive-include zenaida/templates *
+recursive-include zenaida/contrib/feedback/templates *
+recursive-include zenaida/contrib/feedback/static *
