@@ -2039,6 +2039,14 @@ body {
   padding-bottom: 60px;
 }
 
+.margin-leader {
+  margin-top: 19px;
+}
+
+.margin-trailer {
+  margin-bottom: 19px;
+}
+
 .panel-body > h1:first-child, .panel-body > h2:first-child, .panel-body > h3:first-child, .panel-body > h4:first-child, .panel-body > h5:first-child, .panel-body > h6:first-child {
   margin-top: 0;
 }
