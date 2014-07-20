@@ -85,7 +85,7 @@
             <script type="text/javascript">
                 $('.chosen-select').each(function () {
                     var $this = $(this),
-                        first_child = $this.children().eq(0),
+                        first_child = $this.children("option").eq(0),
                         options = {
                             width: "100%",
                             allow_single_deselect: (typeof $this.attr('required')) === "undefined" && first_child.val() === ""
