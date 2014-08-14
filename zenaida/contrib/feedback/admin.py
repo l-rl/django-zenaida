@@ -1,12 +1,49 @@
 from django.contrib import admin
+from django.utils.translation import ugettext_lazy as _
 
 from feedback.models import FeedbackItem
+
+class ResolvedListFilter(admin.SimpleListFilter):
+    """
+    Filter for FeedbackAdmin, which filters on the `resolved` field,
+    but defaults to showing unresolved items.
+
+    """
+
+    title = _("resolved")
+    parameter_name = "resolved"
+
+    def lookups(self, request, modeladmin):
+        return (
+            ("all", _("All")),
+            (None, _("No")),
+            ("yes", _("Yes"))
+        )
+
+    def choices(self, cl):
+        for lookup, title in self.lookup_choices:
+            yield {
+                'selected': self.value() == lookup,
+                'query_string': cl.get_query_string({
+                    self.parameter_name: lookup,
+                }, []),
+                'display': title,
+            }
+
+    def queryset(self, request, queryset):
+        if self.value() == "all":
+            return queryset
+        elif self.value() == "yes":
+            return queryset.filter(resolved=True)
+        else:
+            return queryset.filter(resolved=False)
+
 
 class FeedbackAdmin(admin.ModelAdmin):
     list_display = ("timestamp", "__unicode__", "content", "resolved",)
     list_links = ("timestamp", "__unicode__")
     list_editable = ("resolved",)
-    list_filter = ("resolved", "request_path", "view", "timestamp",)
+    list_filter = (ResolvedListFilter, "request_path", "view", "timestamp",)
 
     fieldsets = (
         (None, {
@@ -44,7 +81,7 @@ class FeedbackAdmin(admin.ModelAdmin):
 
     def mark_unresolved(self, request, queryset):
         queryset.update(resolved=False)
-    mark_resolved.short_description = "Mark these items as not resolved."
+    mark_unresolved.short_description = "Mark these items as not resolved."
 
     actions = [mark_resolved, mark_unresolved]
 
